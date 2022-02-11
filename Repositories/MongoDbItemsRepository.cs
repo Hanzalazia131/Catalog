@@ -20,35 +20,36 @@ namespace Catalog.Repositories
             itemsCollection = database.GetCollection<Item>(collectionName);
         }
 
-        public void CreateItem(Item item)
+        public async Task CreateItemAsync(Item item)
         {
-            itemsCollection.InsertOne(item);
+            await itemsCollection.InsertOneAsync(item);
         }
 
-        public void DeleteItem(Guid Id)
+        public async Task DeleteItemAsync(Guid Id)
         {
             var deleteFilter = filterBuilder.Eq(item => item.Id, Id);
-            itemsCollection.DeleteOne(deleteFilter);
+            await itemsCollection.DeleteOneAsync(deleteFilter);
             // var item = 
             // itemsCollection.DeleteOne(item);
         }
 
-        public Item GetItem(Guid id)
+        public async Task<Item> GetItemAsync(Guid id)
         {
             var filter = filterBuilder.Eq(item => item.Id, id);
-            return itemsCollection.Find(filter).SingleOrDefault();
+            return await itemsCollection.Find(filter).SingleOrDefaultAsync();
+            // return itemsCollection.Find(filter).SingleOrDefault();
         }
 
-        public IEnumerable<Item> GetItems()
+        public async Task<IEnumerable<Item>> GetItemsAsync()
         {
-            // return itemsCollection.Find(new BsonDocument()).ToList();
-            return itemsCollection.AsQueryable();
+            return await itemsCollection.Find(new BsonDocument()).ToListAsync();
+            // return itemsCollection.AsQueryable();
         }
 
-        public void UpdateItem(Item item)
+        public async Task UpdateItemAsync(Item item)
         {
             var filter = filterBuilder.Eq(existingItem => existingItem.Id, item.Id);
-            itemsCollection.ReplaceOne(filter, item);
+            await itemsCollection.ReplaceOneAsync(filter, item);
         }
     }
 }

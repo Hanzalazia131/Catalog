@@ -44,6 +44,10 @@ namespace Catalog
             services.AddSingleton<IItemsRepository, MongoDbItemsRepository>();
 
             services.AddControllers();
+            // services.AddControllers(options =>                   //in case the sufix is being removed on run time
+            // {
+            //     options.SuppressAsyncSuffixInActionNames = false;
+            // });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog", Version = "v1" });
